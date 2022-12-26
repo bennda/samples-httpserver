@@ -8,6 +8,9 @@ IMAGE_FULLNAME=${IMAGE_NAME}:${IMAGE_VERSION}
 help:
 	    @echo "Makefile arguments:"
 	    @echo ""
+		@echo "java-build"
+		@echo "java-test"
+		@echo "java"
 	    @echo "net-build"
 		@echo "net-test"
 		@echo "net"
@@ -39,8 +42,30 @@ net-test:
 
 net: net-build net-test
 
-build: net-build
+java-build:
+		@echo "\n===== docker build: java server"
+		@docker build --no-cache --pull -t "${IMAGE_FULLNAME}-java-server" ./java
 
-test: net-test
+java-test:
+		@echo "\n===== test: java server init";
+		@export NETWORK="$(shell docker network ls --filter name=javaservertest --format "{{.Name}}")"; \
+		if [ "$(shell docker ps --filter name=javaservertest --format "{{.Names}}")" = "javaservertest" ]; then docker rm -f "javaservertest"; fi; \
+		if [ "$(shell docker network ls --filter name=javaservertest --format "{{.Name}}")" = "javaservertest" ]; then docker network rm javaservertest; fi;
+		@docker network create --driver=bridge --subnet=172.231.0.0/16 javaservertest
+		@docker run -d -p 80:80 --name "javaservertest" --network javaservertest ${IMAGE_FULLNAME}-java-server
+		@echo "\n===== test: java server"; \
+		ECHO="$$(docker run --rm --network javaservertest curlimages/curl -s 'javaservertest?text=hello%20webapi')"; \
+		#RAND="$$(docker run --rm --network javaservertest curlimages/curl -s javaservertest/random)"; \
+		echo "echo: $$ECHO"; \
+		#echo "rand: $$RAND"
+		@echo "\n===== test: cleanup"
+		#@docker rm -f javaservertest
+		#@docker network rm javaservertest
+
+java: java-build java-test
+
+build: net-build java-build
+
+test: net-test java-test
 
 all: build test
