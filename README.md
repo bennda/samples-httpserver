@@ -7,6 +7,7 @@ This project contains simple http servers in different popular languages, incl. 
 
 Sample http servers are available in the following languages:
 - dotnet
+- go
 - java
 
 ### Features
