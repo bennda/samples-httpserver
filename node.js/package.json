@@ -1,0 +1,13 @@
+{
+  "name": "sample_nodejs_server",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "Daniel Bennett <dnnybnt@gmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
