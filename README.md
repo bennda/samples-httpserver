@@ -9,6 +9,7 @@ Sample http servers are available in the following languages:
 - dotnet
 - go
 - java
+- python
 
 ### Features
 Sample http servers contain the following features:
