@@ -42,7 +42,7 @@ test-cleanup:
 
 go-build:
 		@echo "\n===== docker build: go"
-		@docker build --no-cache --pull --build-arg BASE_IMAGE=golang --build-arg BASE_VERSION=1.19.4-alpine3.17 -t "${IMAGE_FULLNAME}-go" ./go
+		@docker build --no-cache --pull -t "${IMAGE_FULLNAME}-go" ./go
 
 go-test:
 		@echo "\n===== test: go server"

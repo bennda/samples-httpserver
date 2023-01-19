@@ -1,9 +1,10 @@
-ARG BASE_IMAGE=golang
-ARG BASE_VERSION=latest
+FROM golang:alpine as build
+WORKDIR /src
+COPY *.go .
+RUN go build -o /server *.go
 
-FROM $BASE_IMAGE:$BASE_VERSION
-
-RUN mkdir /app
-COPY server.go /app
+FROM alpine:latest
 WORKDIR /app
-ENTRYPOINT [ "go", "run", "./server.go" ]
+COPY --from=build /server .
+
+ENTRYPOINT [ "./server" ]

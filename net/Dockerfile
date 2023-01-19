@@ -1,5 +1,5 @@
 ARG BASE_IMAGE=mcr.microsoft.com/dotnet/aspnet
-ARG BASE_VERSION=latest
+ARG BASE_VERSION=7.0.2-alpine3.17-amd64
 
 FROM mcr.microsoft.com/dotnet/sdk:latest AS builder
 WORKDIR /code/
